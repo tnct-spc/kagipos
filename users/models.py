@@ -6,6 +6,8 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from django.core.validators import MinLengthValidator
+
 
 class AbstractUser(AbstractBaseUser, PermissionsMixin):
     """
@@ -16,7 +18,7 @@ class AbstractUser(AbstractBaseUser, PermissionsMixin):
     username_validator = UnicodeUsernameValidator()
 
     username = models.CharField(
-        _('username'),
+        verbose_name=_('username'),
         max_length=150,
         unique=True,
         help_text=_('Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
@@ -25,23 +27,26 @@ class AbstractUser(AbstractBaseUser, PermissionsMixin):
             'unique': _("A user with that username already exists."),
         },
     )
-    first_name = models.CharField(_('first name'), max_length=30, blank=True)
-    last_name = models.CharField(_('last name'), max_length=150, blank=True)
-    email = models.EmailField(_('email address'), blank=True)
+    first_name = models.CharField(verbose_name=_('first name'), max_length=30)
+    last_name = models.CharField(verbose_name=_('last name'), max_length=150)
+    email = models.EmailField(verbose_name=_('email address'), blank=True)
+    number = models.PositiveIntegerField(verbose_name=_('学籍番号'), unique=True, max_length=5, validators=[MinLengthValidator(5)])
+    wallet = models.PositiveIntegerField(verbose_name=_('所持金額'))
+
     is_staff = models.BooleanField(
-        _('staff status'),
+        verbose_name=_('staff status'),
         default=False,
         help_text=_('Designates whether the user can log into this admin site.'),
     )
     is_active = models.BooleanField(
-        _('active'),
+        verbose_name=_('active'),
         default=True,
         help_text=_(
             'Designates whether this user should be treated as active. '
             'Unselect this instead of deleting accounts.'
         ),
     )
-    date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
+    date_joined = models.DateTimeField(verbose_name=_('date joined'), default=timezone.now)
 
     objects = UserManager()
 
