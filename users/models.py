@@ -9,7 +9,7 @@ from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinLengthValidator
 
 
-class AbstractUser(AbstractBaseUser, PermissionsMixin):
+class User(AbstractBaseUser, PermissionsMixin):
     """
     An abstract base class implementing a fully featured User model with
     admin-compliant permissions.
@@ -30,8 +30,12 @@ class AbstractUser(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(verbose_name=_('first name'), max_length=30)
     last_name = models.CharField(verbose_name=_('last name'), max_length=150)
     email = models.EmailField(verbose_name=_('email address'), blank=True)
-    number = models.PositiveIntegerField(verbose_name=_('学籍番号'), unique=True, max_length=5, validators=[MinLengthValidator(5)])
-    wallet = models.PositiveIntegerField(verbose_name=_('所持金額'))
+    number = models.PositiveIntegerField(
+        verbose_name=_('学籍番号'),
+        unique=True, max_length=5,
+        validators=[MinLengthValidator(5)]
+    )
+    wallet = models.PositiveIntegerField(verbose_name=_('所持金額'), default=0)
 
     is_staff = models.BooleanField(
         verbose_name=_('staff status'),
@@ -52,7 +56,7 @@ class AbstractUser(AbstractBaseUser, PermissionsMixin):
 
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'email', 'number']
 
     class Meta:
         verbose_name = _('user')
