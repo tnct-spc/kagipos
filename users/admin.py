@@ -2,7 +2,10 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserChangeForm, UserCreationForm, AdminPasswordChangeForm
 from django.utils.translation import gettext_lazy as _
 
-from .models import User
+from .models import User, Card
+
+
+admin.site.register(Card)
 
 
 @admin.register(User)

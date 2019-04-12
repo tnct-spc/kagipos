@@ -80,3 +80,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     def email_user(self, subject, message, from_email=None, **kwargs):
         """Send an email to this user."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
+
+
+class Card(models.Model):
+    is_guest = models.BooleanField(verbose_name='ゲスト', default=False)
+    name = models.CharField(verbose_name='カード名', max_length=100)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cards', verbose_name='所持ユーザー')
+    idm = models.BigIntegerField(verbose_name='FeliCa ID', unique=True)
