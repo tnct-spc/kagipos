@@ -6,7 +6,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from django.core.validators import MinLengthValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -32,8 +32,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(verbose_name=_('email address'), blank=True)
     number = models.PositiveIntegerField(
         verbose_name=_('学籍番号'),
-        unique=True, max_length=5,
-        validators=[MinLengthValidator(5)]
+        unique=True,
+        validators=[MinValueValidator(10000), MaxValueValidator(99999)]
     )
     wallet = models.PositiveIntegerField(verbose_name=_('所持金額'), default=0)
 
@@ -61,7 +61,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = _('user')
         verbose_name_plural = _('users')
-        abstract = True
 
     def clean(self):
         super().clean()
