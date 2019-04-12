@@ -87,3 +87,7 @@ class Card(models.Model):
     name = models.CharField(verbose_name='カード名', max_length=100)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cards', verbose_name='所持ユーザー')
     idm = models.BigIntegerField(verbose_name='FeliCa ID', unique=True)
+
+    class Meta:
+        verbose_name = _('ICカード')
+        verbose_name_plural = _('ICカード')
