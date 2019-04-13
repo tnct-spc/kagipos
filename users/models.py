@@ -6,6 +6,8 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+import uuid
+
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 
@@ -91,3 +93,12 @@ class Card(models.Model):
     class Meta:
         verbose_name = _('ICカード')
         verbose_name_plural = _('ICカード')
+
+
+class Temporary(models.Model):
+    idm = models.BigIntegerField(verbose_name='FeliCa ID', unique=True)
+    uuid = models.UUIDField(verbose_name='UUID', default=uuid.uuid4, editable=False)
+
+    class Meta:
+        verbose_name = _('紐づけデータ')
+        verbose_name_plural = _('紐づけデータ')
