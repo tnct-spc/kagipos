@@ -18,5 +18,6 @@ from django.urls import path
 from . import views as possysViews
 
 urlpatterns = [
+    path('', possysViews.ProductsList, name="productsList"),
     path('signup/', possysViews.Signup, name="signup"),
 ]

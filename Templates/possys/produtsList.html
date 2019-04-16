@@ -1,0 +1,25 @@
+{% extends 'possys/base.html' %}
+
+{% block title %}商品一覧{% endblock %}
+
+{% block body %}
+    <ul>
+    {% for product in products %}
+        <li>
+            <h2>{{ product.name }}</h2>
+            <p>{{ product.price }}円</p>
+            <p>カテゴリー</p>
+            <ul>
+                {% for category in product.categories.values %}
+                    <li>{{ category.name }}</li>
+                {% endfor %}
+            </ul>
+            <form action="/kessaiApiUrl{% comment %}temporary{% endcomment %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="price" value="{{ product.price }}">
+                <button type="submit">購入する</button> {% comment %}購入ボタンが押されるとpriceという名前で価格(整数)が決済APIに送信される{% endcomment %}
+            </form>
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock %}
