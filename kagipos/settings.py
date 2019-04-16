@@ -126,3 +126,9 @@ STATIC_URL = '/static/'
 
 
 AUTH_USER_MODEL = 'users.User'
+
+LOGOUT_REDIRECT_URL = 'productsList'
+
+LOGIN_URL = 'login'
+
+LOGIN_REDIRECT_URL = 'productsList'

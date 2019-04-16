@@ -26,7 +26,7 @@ class Product(models.Model):
 class Transaction(models.Model):
     price = models.IntegerField(verbose_name='金額')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='transactions', verbose_name='ユーザー')
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='transactions', verbose_name='商品', blank=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='transactions', verbose_name='商品', blank=True, null=True)
     timestamp = models.DateTimeField(verbose_name='取引時刻', default=timezone.now)
 
     class Meta:

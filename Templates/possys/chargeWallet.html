@@ -1,0 +1,13 @@
+{% extends 'possys/base.html' %}
+
+{% block title %}残金追加{% endblock %}
+
+{% block body %}
+    <p>{{ user.username }}さんの現在の残金:{{ user.wallet }}円</p>
+    <form method="post">
+        {% csrf_token %}
+        <label for="price">金額</label>
+        <input type="number" name="price">
+        <button type="submit">入金する</button>
+    </form>
+{% endblock %}
