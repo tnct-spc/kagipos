@@ -1,0 +1,11 @@
+{% extends 'possys/base.html' %}
+
+{% block title %}ユーザー登録{% endblock %}
+
+{% block body %}
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">登録する</button>
+    </form>
+{% endblock %}
