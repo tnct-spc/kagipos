@@ -127,8 +127,8 @@ STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'users.User'
 
-LOGOUT_REDIRECT_URL = 'productsList'
+LOGOUT_REDIRECT_URL = 'products_list'
 
 LOGIN_URL = 'login'
 
-LOGIN_REDIRECT_URL = 'productsList'
+LOGIN_REDIRECT_URL = 'products_list'

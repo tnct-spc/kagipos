@@ -18,6 +18,6 @@ from . import views as possys_views
 
 urlpatterns = [
     path('accounts/', include('users.urls')),
-    path('', possys_views.products_list, name="productsList"),
+    path('', possys_views.products_list, name="products_list"),
     path('history/', possys_views.history, name="history"),
 ]
