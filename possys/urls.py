@@ -13,16 +13,11 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path
-from . import views as possysViews
-from django.contrib.auth.views import LoginView, LogoutView
+from django.urls import path, include
+from . import views as possys_views
 
 urlpatterns = [
-    path('', possysViews.ProductsList, name="productsList"),
-    path('history/', possysViews.History, name="history"),
-    path('chargeWallet/', possysViews.ChargeWallet, name="chargeWallet"),
-    path('signup/', possysViews.Signup, name="signup"),
-    path('login/', LoginView.as_view(template_name="possys/login.html"), name="login"),
-    path('logout/', LogoutView.as_view(), name="logout"),
+    path('accounts/', include('users.urls')),
+    path('', possys_views.products_list, name="productsList"),
+    path('history/', possys_views.history, name="history"),
 ]

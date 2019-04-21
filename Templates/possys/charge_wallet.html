@@ -7,7 +7,7 @@
     <form method="post">
         {% csrf_token %}
         <label for="price">金額</label>
-        <input type="number" name="price">
+        <input id="price" type="number" name="price">
         <button type="submit">入金する</button>
     </form>
 {% endblock %}
