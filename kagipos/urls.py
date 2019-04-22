@@ -18,5 +18,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('possys/', include('possys.urls')) #とりあえずpossysはpossysのurlsを使うようにする
+    path('possys/', include('possys.urls'))
 ]

@@ -30,6 +30,6 @@ def charge_wallet(request):
             price = int(price)
             user.wallet += price
             user.save()
-        return redirect("/possys/charge_wallet")
+        return redirect("/possys/accounts/charge_wallet")
 
     return render(request, 'possys/charge_wallet.html', {'user': user, })
