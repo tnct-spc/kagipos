@@ -6,8 +6,6 @@
     <p>{{ user.username }}さんの現在の残金:{{ user.wallet }}円</p>
     <form method="post">
         {% csrf_token %}
-        <label for="price">金額</label>
-        <input id="price" type="number" name="price">
-        <button type="submit">入金する</button>
+        <button type="submit">1000円チャージ！</button>
     </form>
 {% endblock %}

@@ -25,11 +25,9 @@ def signup(request):
 def charge_wallet(request):
     user = request.user
     if request.method == 'POST':
-        price = request.POST['price']
-        if price != "":
-            price = int(price)
-            user.wallet += price
-            user.save()
-        return redirect("/possys/accounts/charge_wallet")
+        # 1000円チャージする
+        user.wallet += 1000
+        user.save()
+        return redirect("/accounts/charge_wallet")
 
     return render(request, 'possys/charge_wallet.html', {'user': user, })
