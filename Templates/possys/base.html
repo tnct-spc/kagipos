@@ -21,7 +21,10 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
             <ul class="navbar-nav">
                 {% if user.is_authenticated %}
-                {# ログインしていたら各ページへのリンクを表示する #}
+                {# ログインしていたらユーザー名と各ページへのリンクを表示する #}
+                    <li class="nav-item" style="border-bottom: 2px solid gray;">
+                        <span class="navbar-text">{{ user.username }}さん</span>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/possys/history">決済履歴</a>
                     </li>
