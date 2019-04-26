@@ -26,7 +26,7 @@ def add_transaction(price, idm, product=None):
         product=product
     )
     transaction.save()
-    return Response('True')
+    return Response('True,wallet=' + str(card.user.wallet))
 
 
 @login_required
