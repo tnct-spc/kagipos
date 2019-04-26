@@ -9,7 +9,7 @@ from users.models import Card
 
 class IsKagisysHousing(BasePermission):
     def has_permission(self, request, view):
-        return request.user.groups.filter(name='possys').exists()
+        return request.user.groups.filter(name='kagisys').exists()
 
 
 @login_required
