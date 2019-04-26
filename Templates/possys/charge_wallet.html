@@ -3,9 +3,14 @@
 {% block title %}残金追加{% endblock %}
 
 {% block body %}
-    <p>{{ user.username }}さんの現在の残金:{{ user.wallet }}円</p>
+    <h2 style="text-align: center">残金追加</h2>
+    <div class="card" style="width: 80%; margin: 10%;">
+        <div class="card-body">
+            {{ user.username }}さんの現在の残金 : {{ user.wallet }}円
+        </div>
+    </div>
     <form method="post">
         {% csrf_token %}
-        <button type="submit">1000円チャージ！</button>
+        <button type="submit" class="btn btn-dark" style="width: 60%; margin: 10% 20% 20% 20%;">1000円チャージ！</button>
     </form>
 {% endblock %}

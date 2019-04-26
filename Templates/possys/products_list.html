@@ -3,23 +3,28 @@
 {% block title %}商品一覧{% endblock %}
 
 {% block body %}
-    <ul>
+    <h2 style="text-align: center">商品一覧</h2>
     {% for product in products %}
-        <li>
-            <h2>{{ product.name }}</h2>
-            <p>{{ product.price }}円</p>
-            <p>カテゴリー</p>
-            <ul>
-                {% for category in product.categories.values %}
-                    <li>{{ category.name }}</li>
-                {% endfor %}
+        <div class="card" style="width: 80%; margin: 10%;">
+            <div class="card-header"><strong>{{ product.name }}</strong></div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">価格 : {{ product.price }}円</li>
+                <li class="list-group-item">
+                    <p>カテゴリー</p>
+                    <ul>
+                        {% for category in product.categories.values %}
+                            <li>{{ category.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li class="list-group-item">
+                    <form action="/kessaiApiUrl{% comment %}temporary{% endcomment %}" method="post">
+                    {% csrf_token %}
+                        <input type="hidden" name="price" value="{{ product.price }}">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">購入する</button> {% comment %}購入ボタンが押されるとpriceという名前で価格(整数)が決済APIに送信される{% endcomment %}
+                    </form>
+                </li>
             </ul>
-            <form action="/kessaiApiUrl{% comment %}temporary{% endcomment %}" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="price" value="{{ product.price }}">
-                <button type="submit">購入する</button> {% comment %}購入ボタンが押されるとpriceという名前で価格(整数)が決済APIに送信される{% endcomment %}
-            </form>
-        </li>
+        </div>
     {% endfor %}
-    </ul>
 {% endblock %}
