@@ -1,13 +1,22 @@
 from django.shortcuts import render
-from .models import Product, Transaction
+from .models import Product, Transaction, Category
 from users.models import Card
+from .serializers import ProductSerializer, CategorySerializer
 from django.contrib.auth.decorators import login_required
 from rest_framework import viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import BasePermission, IsAuthenticated
 from rest_framework.response import Response
 
-# Create your views here.
+
+class ProductViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
 
 
 class IsPossysHousing(BasePermission):

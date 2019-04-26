@@ -14,6 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path, re_path, include
+from rest_framework import routers
+
 from . import views as possys_views
 
 urlpatterns = [
@@ -22,3 +24,7 @@ urlpatterns = [
     path('api/add_transaction/<int:price>/<idm>/<int:product_id>/', possys_views.add_transaction_with_product),
     path('api/add_transaction/<int:price>/<idm>/', possys_views.add_transaction_without_product),
 ]
+
+router = routers.DefaultRouter()
+router.register(r'products', possys_views.ProductViewSet)
+router.register(r'categories', possys_views.CategoryViewSet)
