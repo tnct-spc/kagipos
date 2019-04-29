@@ -1,6 +1,6 @@
 {% extends 'possys/base.html' %}
 
-{% block title %}ユーザー登録{% endblock %}
+{% block title %}カード登録{% endblock %}
 
 {% block head %}
     {# djangoの自動生成でlabelによくわからないmargin-bottomが入っていたので消す #}
@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block body %}
-    <h2 style="text-align: center">ユーザー登録</h2>
+    <h2 style="text-align: center">カード登録</h2>
     <div class="card" style="width: 94%; margin: 3%; padding: 5%;">
         <form method="post" style="margin: 5%;" novalidate>
         {% csrf_token %}
@@ -23,17 +23,17 @@
                         <small style="color: red;">{{ error }}</small>
                     {% endfor %}
                 {% endif %}
-                <div class="input-group mb-3" style="transform: scale(0.9); width: 110%"> {# 縮小と横幅の拡張をしないとスマホのときに確認用パスワードのレイアウトが崩れる #}
+                <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text">{{ field.label_tag }}</span>
                     </div>
                     {{ field.as_widget }}
                 </div>
                     {% if field.help_text %}
-                        <small class="form-text text-muted" style="transform: scale(0.9); margin-bottom: 2%;">{{ field.help_text }}</small>　{# 縮小と横幅の拡張をしないとスマホのときに確認用パスワードのレイアウトが崩れる #}
+                        <small class="form-text text-muted">{{ field.help_text }}</small>
                     {% endif %}
             {% endfor %}
-            <button type="submit" class="btn btn-primary" style="width: 100%;">登録する</button>
+            <button type="submit" class="btn btn-primary" style="margin-top: 5%; width: 100%">登録する</button>
         </form>
     </div>
 

@@ -5,8 +5,10 @@ from django.contrib.auth.decorators import login_required
 from django.views import View
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import Temporary
 from possys.views import add_transaction
+from django.views.generic.edit import CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .models import Temporary, Card
 
 
 @api_view(['GET'])
@@ -34,6 +36,16 @@ class SignupView(View):
             # とりあえずトップに飛ばす
             return redirect('/possys/')
         return render(request, 'possys/signup.html', {'form': form, })
+
+
+class CardCreateView(LoginRequiredMixin, CreateView):
+    model = Card
+    fields = ['name']
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.idm = Temporary.objects.get(uuid=self.kwargs['uuid'])
+        return super().form_valid(form)
 
 
 @login_required
