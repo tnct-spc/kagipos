@@ -47,7 +47,7 @@ def add_transaction_with_product(request, idm, product_id):
 @login_required
 @permission_classes(IsPossysHousing)
 @api_view(['GET'])
-def add_transaction_without_product(request, price, idm):
+def add_transaction_without_product(request, idm, price):
     return add_transaction(price, get_user_from_idm(idm))
 
 
