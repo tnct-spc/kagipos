@@ -114,3 +114,7 @@ class Temporary(models.Model):
     def save(self, *args, **kwargs):
         self.full_clean()
         super().save(*args, **kwargs)
+
+
+def get_user_from_idm(idm):
+    return User.objects.get(cards__idm=idm)
