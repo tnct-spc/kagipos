@@ -37,17 +37,17 @@ def add_transaction(price, user, product=None):
 @login_required
 @permission_classes(IsPossysHousing)
 @api_view(['GET'])
-def add_transaction_with_product(request, price, idm, product_id):
+def add_transaction_with_product(request, idm, product_id):
     product = Product.objects.filter(pk=product_id).first()
     if product is None:
         return Response('Product is not found', status=418)
-    return add_transaction(price, get_user_from_idm(idm), product)
+    return add_transaction(-product.price, get_user_from_idm(idm), product)
 
 
 @login_required
 @permission_classes(IsPossysHousing)
 @api_view(['GET'])
-def add_transaction_without_product(request, price, idm):
+def add_transaction_without_product(request, idm, price):
     return add_transaction(price, get_user_from_idm(idm))
 
 
