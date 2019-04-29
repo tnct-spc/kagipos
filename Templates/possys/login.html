@@ -40,11 +40,11 @@
 
     {# widget_tweaksを使わずに自動生成formでbootstrapを使う #}
     <script>
-        window.onload = function(){
+        (function(){
             let input_forms = document.getElementsByTagName("input");
             for(let i = 0; i < input_forms.length; i++){
                 input_forms[i].classList.add("form-control");
             }
-        };
+        })()
     </script>
 {% endblock %}
