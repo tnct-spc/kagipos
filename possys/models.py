@@ -30,5 +30,10 @@ class Transaction(models.Model):
     timestamp = models.DateTimeField(verbose_name='取引時刻', default=timezone.now)
 
     class Meta:
-        verbose_name = _('取引履歴')
-        verbose_name_plural = _('取引履歴')
+        verbose_name = _('取引')
+        verbose_name_plural = _('取引')
+
+    def save(self, *args, **kwargs):
+        self.user.wallet += self.price
+        self.user.save()
+        super().save(*args, **kwargs)
