@@ -41,10 +41,11 @@ class SignupView(View):
 class CardCreateView(LoginRequiredMixin, CreateView):
     model = Card
     fields = ['name']
+    success_url = '/possys/'
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-        form.instance.idm = Temporary.objects.get(uuid=self.kwargs['uuid'])
+        form.instance.idm = Temporary.objects.get(uuid=self.kwargs['uuid']).idm
         return super().form_valid(form)
 
 
