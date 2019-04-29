@@ -4,6 +4,9 @@
 
 {% block body %}
     <h2 style="text-align: center">残金追加</h2>
+    {% if result_message %}
+        <h5 style="color: red; margin: 10%">{{ result_message }}</h5>
+    {% endif %}
     <div class="card" style="width: 80%; margin: 10%;">
         <div class="card-body">
             {{ user.username }}さんの現在の残金 : {{ user.wallet }}円
