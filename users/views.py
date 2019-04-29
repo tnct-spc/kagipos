@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.views import View
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import Temporary, Card
+from .models import Temporary
 from possys.views import add_transaction
 
 
@@ -38,16 +38,11 @@ class SignupView(View):
 
 @login_required
 def charge_wallet(request):
-    result_message = None
     if request.method == 'POST':
         # 1000円チャージする
-        card = Card.objects.filter(user=request.user).first()
-        if card is None:
-            result_message = "入金に失敗しました．FeliCaカードを設定してください．"
-        else:
-            # FeliCaカードを設定されていたら入金する
-            price = 1000
-            idm = card.idm
-            add_transaction(price, idm)
-            result_message = "入金に成功しました．"
-    return render(request, 'possys/charge_wallet.html', {'result_message': result_message, })
+        price = 1000
+        user = request.user
+        # 引数がidmからuserに変更されるので先に対応しておく
+        add_transaction(price, user)
+        return redirect('charge_wallet')
+    return render(request, 'possys/charge_wallet.html', {})
