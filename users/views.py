@@ -2,8 +2,18 @@ from django.shortcuts import render, redirect
 from .form import SignupForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .models import Temporary
 
-# Create your views here.
+
+@api_view(['GET'])
+def add_idm(request, idm):
+    temporary = Temporary(
+        idm=idm
+    )
+    temporary.save()
+    return Response(temporary.uuid.hex)
 
 
 def signup(request):
