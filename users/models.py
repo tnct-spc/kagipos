@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 
 import uuid
 
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MinLengthValidator, RegexValidator, MinValueValidator, MaxValueValidator
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -88,17 +88,29 @@ class Card(models.Model):
     is_guest = models.BooleanField(verbose_name='ゲスト', default=False)
     name = models.CharField(verbose_name='カード名', max_length=100)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cards', verbose_name='所持ユーザー')
-    idm = models.BigIntegerField(verbose_name='FeliCa ID', unique=True)
+    idm_regex = RegexValidator(regex='^[0-9A-F]{16}$', message=_('IDm must be 16-digit hexadecimal number'))
+    idm = models.CharField(verbose_name='FeliCa ID', unique=True, max_length=16,
+                           validators=[MinLengthValidator(16), idm_regex])
 
     class Meta:
         verbose_name = _('ICカード')
         verbose_name_plural = _('ICカード')
 
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+
 
 class Temporary(models.Model):
-    idm = models.BigIntegerField(verbose_name='FeliCa ID', unique=True)
+    idm_regex = RegexValidator(regex='^[0-9A-F]{16}$', message=_('IDm must be 16-digit hexadecimal number'))
+    idm = models.CharField(verbose_name='FeliCa ID', unique=True, max_length=16,
+                           validators=[MinLengthValidator(16), idm_regex])
     uuid = models.UUIDField(verbose_name='UUID', default=uuid.uuid4, editable=False)
 
     class Meta:
         verbose_name = _('紐づけデータ')
         verbose_name_plural = _('紐づけデータ')
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
