@@ -1,0 +1,27 @@
+<button type="button" class="btn btn-primary product-buy" data-toggle="modal" data-target="#confirmationModalFor{{ product.name }}">
+    購入
+</button>
+
+<div class="modal fade" id="confirmationModalFor{{ product.name }}" tabindex="-1" role="dialog" aria-labelledby="confirmationModalFor{{ product.name }}Label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalFor{{ product.name }}Label">確認</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{ product.name }}を購入しますか？
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">やめる</button>
+                <form action="/kessaiApiUrl{% comment %}temporary{% endcomment %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="price" value="{{ product.price }}">
+                    <button type="submit" class="btn btn-primary">購入する</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
