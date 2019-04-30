@@ -13,10 +13,7 @@ from .models import Temporary, Card
 
 @api_view(['GET'])
 def add_idm(request, idm):
-    temporary = Temporary(
-        idm=idm
-    )
-    temporary.save()
+    temporary, created = Temporary.objects.get_or_create(idm=idm)
     return Response(temporary.uuid.hex)
 
 
