@@ -34,7 +34,6 @@ def add_transaction(price, user, product=None):
     return Response('True,wallet=' + str(user.wallet))
 
 
-@login_required
 @permission_classes(IsPossysHousing)
 @api_view(['GET'])
 def add_transaction_with_product(request, idm, product_id):
@@ -44,7 +43,6 @@ def add_transaction_with_product(request, idm, product_id):
     return add_transaction(-product.price, get_user_from_idm(idm), product)
 
 
-@login_required
 @permission_classes(IsPossysHousing)
 @api_view(['GET'])
 def add_transaction_without_product(request, idm, price):

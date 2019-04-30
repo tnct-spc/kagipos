@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.urls import path, re_path, include
 from rest_framework import routers
+from rest_framework_jwt.views import obtain_jwt_token
 
 from . import views as possys_views
 
@@ -23,6 +24,7 @@ urlpatterns = [
     path('history/', possys_views.history, name="history"),
     path('api/add_transaction/<idm>/<int:product_id>/', possys_views.add_transaction_with_product),
     path('api/add_transaction/<idm>/<int:price>/', possys_views.add_transaction_without_product),
+    path('api/jwt-token-auth/', obtain_jwt_token),
 ]
 
 router = routers.DefaultRouter()
