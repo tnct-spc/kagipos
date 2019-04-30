@@ -1,23 +1,27 @@
 {% extends 'possys/base.html' %}
 
-{% block title %}購入履歴{% endblock %}
+{% block title %}決済履歴{% endblock %}
 
 {% block body %}
-    <ul>
-        {% for transaction in transactions %}
-            {% if transaction.product %}
-                <li>
-                    <h2>{{ transaction.product.name }}</h2>
-                    <p>金額:{{ transaction.price }}円</p>
-                    <p>購入日:{{ transaction.timestamp }}</p>
-                </li>
-            {% else %}
-                <li>
-                    <h2>入金</h2>
-                    <p>金額:{{ transaction.price }}円</p>
-                    <p>入金日:{{ transaction.timestamp }}</p>
-                </li>
-            {% endif %}
-        {% endfor %}
-    </ul>
+    <h2 style="text-align: center">決済履歴</h2>
+    {% for transaction in transactions %}
+        {% if transaction.product %}
+            <div class="card" style="width: 80%; margin: 10%;">
+                <div class="card-header"><strong>商品購入</strong></div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">商品名 : {{ transaction.product.name }}</li>
+                    <li class="list-group-item">支払い金額 : {{ transaction.price }}円</li>
+                    <li class="list-group-item">決済日時 : {{ transaction.timestamp }}</li>
+                </ul>
+            </div>
+        {% else %}
+            <div class="card" style="width: 80%; margin: 10%;">
+                <div class="card-header"><strong>入金</strong></div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">支払い金額 : {{ transaction.price }}円</li>
+                    <li class="list-group-item">決済日時 : {{ transaction.timestamp }}</li>
+                </ul>
+            </div>
+        {% endif %}
+    {% endfor %}
 {% endblock %}

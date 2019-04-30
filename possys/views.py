@@ -52,9 +52,14 @@ def add_transaction_without_product(request, idm, price):
 
 
 def products_list(request):
-    products = Product.objects.all()
-
-    return render(request, 'possys/products_list.html', {'products': products, })
+    categories = Category.objects.all()
+    products_dictionary_of_each_category = {}
+    for category in categories:
+        tmp_list = Product.objects.filter(categories=category)
+        products_dictionary_of_each_category[category] = tmp_list
+    return render(request, 'possys/products_list.html', {
+        'products_dictionary_of_each_category': products_dictionary_of_each_category,
+    })
 
 
 @login_required

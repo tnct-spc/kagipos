@@ -3,23 +3,65 @@
 {% block title %}商品一覧{% endblock %}
 
 {% block body %}
-    <ul>
-    {% for product in products %}
-        <li>
-            <h2>{{ product.name }}</h2>
-            <p>{{ product.price }}円</p>
-            <p>カテゴリー</p>
-            <ul>
-                {% for category in product.categories.values %}
-                    <li>{{ category.name }}</li>
+    <h2 style="text-align: center">商品一覧</h2>
+
+    {% for category, products_list in products_dictionary_of_each_category.items %}
+        <div class="card" style="width: 90%; margin: 5% 5% 10% 5%;">
+            <div class="card-header"><strong>{{ category.name }}</strong></div>
+            <ul class="list-group list-group-flush">
+                {% for product in products_list %}
+                    <li class="list-group-item">
+                        <button class="btn btn-dark product-name" style="width: 25vw; opacity: 1;" disabled>{{ product.name }}</button>
+                        <span class="product-price" style="margin-left: 15vw; margin-right: 5vw;">{{ product.price }}円</span>
+                        <button type="button" class="btn btn-primary product-buy" data-toggle="modal" data-target="#confirmationModalFor{{ product.name }}">
+                            購入
+                        </button>
+
+                        {# beginModal #}
+                        <div class="modal fade" id="confirmationModalFor{{ product.name }}" tabindex="-1" role="dialog" aria-labelledby="confirmationModalFor{{ product.name }}Label" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="confirmationModalFor{{ product.name }}Label">確認</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        {{ product.name }}を購入しますか？
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">やめる</button>
+                                        <form action="/kessaiApiUrl{% comment %}temporary{% endcomment %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="price" value="{{ product.price }}">
+                                            <button type="submit" class="btn btn-primary">購入する</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {# endModal #}
+
+                    </li>
                 {% endfor %}
             </ul>
-            <form action="/kessaiApiUrl{% comment %}temporary{% endcomment %}" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="price" value="{{ product.price }}">
-                <button type="submit">購入する</button> {% comment %}購入ボタンが押されるとpriceという名前で価格(整数)が決済APIに送信される{% endcomment %}
-            </form>
-        </li>
+        </div>
     {% endfor %}
-    </ul>
+    
+    {# pcで商品の名前，値段，ボタンが小さくなりすぎないようにする #}
+    <script>
+        (function(){
+            //pcの場合
+            if(window.parent.screen.width > window.parent.screen.height){
+                let product_name = document.getElementsByClassName("product-name");
+                let product_price = document.getElementsByClassName("product-price");
+                for(let i = 0; i < product_name.length; i++){
+                    product_name[i].style.width = "30vw";
+                    product_price[i].style.marginLeft = "30vw";
+                    product_price[i].style.marginRight = "5vw";
+                }
+            }
+        })()
+    </script>
 {% endblock %}
