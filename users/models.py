@@ -10,6 +10,8 @@ import uuid
 
 from django.core.validators import MinLengthValidator, RegexValidator, MinValueValidator, MaxValueValidator
 
+from kagipos.errors import CustomError
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     """
@@ -63,6 +65,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = _('user')
         verbose_name_plural = _('users')
+
+    def save(self, *args, **kwargs):
+        if self.wallet < 0:
+            raise CustomError('残高が足りません')
+        super().save(*args, **kwargs)
 
     def clean(self):
         super().clean()

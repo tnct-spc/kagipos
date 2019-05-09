@@ -7,6 +7,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import BasePermission, IsAuthenticated
 from rest_framework.response import Response
+from kagipos.errors import CustomError
 
 
 class ProductViewSet(viewsets.ModelViewSet):
@@ -30,7 +31,10 @@ def add_transaction(price, user, product=None):
         user=user,
         product=product
     )
-    transaction.save()
+    try:
+        transaction.save()
+    except CustomError as e:
+        return Response(str(e), status=418)
     return Response('True,wallet=' + str(user.wallet))
 
 
