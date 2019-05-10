@@ -10,6 +10,8 @@ import uuid
 
 from django.core.validators import MinLengthValidator, RegexValidator, MinValueValidator, MaxValueValidator
 
+from kagipos.errors import CustomError
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     """
@@ -64,6 +66,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name = _('user')
         verbose_name_plural = _('users')
 
+    def save(self, *args, **kwargs):
+        if self.wallet < 0:
+            raise CustomError('残高が足りません')
+        super().save(*args, **kwargs)
+
     def clean(self):
         super().clean()
         self.email = self.__class__.objects.normalize_email(self.email)
@@ -84,13 +91,30 @@ class User(AbstractBaseUser, PermissionsMixin):
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
 
+class IDmField(models.CharField):
+    description = _("FeliCa's IDm")
+    default_validators = [
+        RegexValidator(regex='^[0-9A-F]{16}$', message=_("IDm must be 16-digit hexadecimal number")),
+        MinLengthValidator(16)
+    ]
+
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault('verbose_name', 'FeliCa ID')
+        kwargs.setdefault('unique', True)
+        kwargs['max_length'] = 16
+        super().__init__(*args, **kwargs)
+
+    def deconstruct(self):
+        name, path, args, kwargs = super().deconstruct()
+        del kwargs["max_length"]
+        return name, path, args, kwargs
+
+
 class Card(models.Model):
     is_guest = models.BooleanField(verbose_name='ゲスト', default=False)
     name = models.CharField(verbose_name='カード名', max_length=100)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cards', verbose_name='所持ユーザー')
-    idm_regex = RegexValidator(regex='^[0-9A-F]{16}$', message=_('IDm must be 16-digit hexadecimal number'))
-    idm = models.CharField(verbose_name='FeliCa ID', unique=True, max_length=16,
-                           validators=[MinLengthValidator(16), idm_regex])
+    idm = IDmField()
 
     class Meta:
         verbose_name = _('ICカード')
@@ -102,9 +126,7 @@ class Card(models.Model):
 
 
 class Temporary(models.Model):
-    idm_regex = RegexValidator(regex='^[0-9A-F]{16}$', message=_('IDm must be 16-digit hexadecimal number'))
-    idm = models.CharField(verbose_name='FeliCa ID', unique=True, max_length=16,
-                           validators=[MinLengthValidator(16), idm_regex])
+    idm = IDmField()
     uuid = models.UUIDField(verbose_name='UUID', default=uuid.uuid4, editable=False)
 
     class Meta:
@@ -114,3 +136,7 @@ class Temporary(models.Model):
     def save(self, *args, **kwargs):
         self.full_clean()
         super().save(*args, **kwargs)
+
+
+def get_user_from_idm(idm):
+    return User.objects.get(cards__idm=idm)
