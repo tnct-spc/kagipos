@@ -1,0 +1,41 @@
+version: '3'
+services:
+  base:
+    build: ./docker/base
+    image: djangobase
+
+  django:
+    restart: always
+    build:
+      context: ./
+      dockerfile: ./docker/django/Dockerfile
+    expose:
+      - "3031"
+    depends_on:
+      - postgres
+    command: bash -c "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn kagipos.wsgi -b 0.0.0.0:3031"
+    volumes:
+      - "staticdata:/opt/static/"
+      - "./:/opt/apps/"
+  nginx:
+    restart: always
+    image: nginx
+    depends_on:
+      - django
+    ports:
+      - "80:80"
+    volumes:
+      - "./docker/nginx/:/etc/nginx/"
+      - "staticdata:/opt/apps/static/"
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - "dbdata:/var/lib/postgresql/data"
+    environment:
+      POSTGRES_PASSWORD: hogehoge
+
+volumes:
+  dbdata:
+  staticdata:
