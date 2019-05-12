@@ -1,7 +1,10 @@
+import json
+import requests
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from slack import SLACK_URL
 from users.models import User
 
 
@@ -37,3 +40,27 @@ class Transaction(models.Model):
         self.user.wallet += self.price
         self.user.save()
         super().save(*args, **kwargs)
+        notify_to_slack(self)
+
+
+def notify_to_slack(transaction: Transaction):
+    requests.post(
+        SLACK_URL,
+        json.dumps({
+            'text': '*{0}* `id:{1}` <@{2}>'.format(
+                transaction.timestamp.strftime("[%Y/%m/%d (%H:%M)]"),
+                str(transaction.user_id),
+                transaction.user.username
+            ),
+            'attachments': [
+                {
+                    'color': '#4169e1' if transaction.price < 0 else '#32cd32',
+                    'text': '{0} ￥{1}'.format(
+                        transaction.product.name if transaction.product is not None else 'チャージ',
+                        abs(transaction.price)
+                    )
+                }
+            ]
+        }),
+        headers={'Content-Type': 'application/json'}
+    )
