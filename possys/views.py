@@ -68,6 +68,6 @@ def products_list(request):
 
 @login_required
 def history(request):
-    transactions = Transaction.objects.filter(user=request.user)
+    transactions = Transaction.objects.filter(user=request.user).order_by('-timestamp')
 
     return render(request, 'possys/history.html', {'transactions': transactions, })
