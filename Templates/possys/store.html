@@ -2,6 +2,16 @@
 
 {% block title %}商品一覧{% endblock %}
 
+{% block alert %}
+    {% if result %}
+        {% if result == "NotEnoughMoney" %}
+            {% include 'possys/includes/danger_alert.html' with text="残金が足りません" %}
+        {% else %}
+            {% include 'possys/includes/purchase_result_success_alert.html' %}
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
 {% block body %}
     <h2 style="text-align: center">商品一覧</h2>
 
@@ -29,8 +39,8 @@
                 let product_name = document.getElementsByClassName("product-name");
                 let product_price = document.getElementsByClassName("product-price");
                 for(let i = 0; i < product_name.length; i++){
-                    product_name[i].style.width = "30vw";
-                    product_price[i].style.marginLeft = "30vw";
+                    product_name[i].style.width = "28vw";
+                    product_price[i].style.marginLeft = "28vw";
                     product_price[i].style.marginRight = "5vw";
                 }
             }

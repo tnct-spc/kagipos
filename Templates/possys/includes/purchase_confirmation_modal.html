@@ -16,9 +16,10 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">やめる</button>
-                <form action="/kessaiApiUrl{% comment %}temporary{% endcomment %}" method="post">
+                <form action="" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="price" value="{{ product.price }}">
+                    <input type="hidden" name="product_id" value="{{ product.id }}">
                     <button type="submit" class="btn btn-primary">購入する</button>
                 </form>
             </div>
