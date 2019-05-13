@@ -3,11 +3,13 @@ from .models import Product, Transaction, Category
 from users.models import get_user_from_idm
 from .serializers import ProductSerializer, CategorySerializer
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from rest_framework import viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import BasePermission, IsAuthenticated
 from rest_framework.response import Response
 from kagipos.errors import CustomError
+from django.views.generic.list import ListView
 
 
 class ProductViewSet(viewsets.ModelViewSet):
@@ -66,8 +68,9 @@ def products_list(request):
     })
 
 
-@login_required
-def history(request):
-    transactions = Transaction.objects.filter(user=request.user).order_by('-timestamp')
-
-    return render(request, 'possys/history.html', {'transactions': transactions, })
+@method_decorator(login_required, name='dispatch')
+class HistoryView(ListView):
+    model = Transaction
+    context_object_name = 'transactions'
+    ordering = ['-timestamp']
+    template_name = 'possys/history.html'

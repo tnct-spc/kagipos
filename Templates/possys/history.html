@@ -5,23 +5,39 @@
 {% block body %}
     <h2 style="text-align: center">決済履歴</h2>
     {% for transaction in transactions %}
-        {% if transaction.product %}
-            <div class="card" style="width: 80%; margin: 10%;">
-                <div class="card-header"><strong>商品購入</strong></div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">商品名 : {{ transaction.product.name }}</li>
-                    <li class="list-group-item">支払い金額 : {{ transaction.price }}円</li>
-                    <li class="list-group-item">決済日時 : {{ transaction.timestamp }}</li>
-                </ul>
-            </div>
-        {% else %}
-            <div class="card" style="width: 80%; margin: 10%;">
-                <div class="card-header"><strong>入金</strong></div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">支払い金額 : {{ transaction.price }}円</li>
-                    <li class="list-group-item">決済日時 : {{ transaction.timestamp }}</li>
-                </ul>
-            </div>
-        {% endif %}
+        <div class="card" style="width: 90%; margin: 5% 5% 10% 5%;">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <button class="btn btn-dark transaction-product-name" style="width: 25vw; opacity: 1;" disabled>
+                        {% if transaction.product.name %}
+                            {{ transaction.product.name }}
+                        {% else %}
+                            入金
+                        {% endif %}
+                    </button>
+                    <span class="transaction-timestamp" style="margin-left: 5vw; margin-right: 5vw;">{{ transaction.timestamp }}</span>
+                    <span class="transaction-price" style="margin-left: 5vw; margin-right: 5vw;">{{ transaction.price }}円</span>
+                </li>
+            </ul>
+        </div>
     {% endfor %}
+
+    {# pcで商品の名前，時間，値段が小さくなりすぎないようにする #}
+    <script>
+        (function(){
+            //pcの場合
+            if(window.parent.screen.width > window.parent.screen.height){
+                let transaction_product_name = document.getElementsByClassName("transaction-product-name");
+                let transaction_timestamp = document.getElementsByClassName("transaction-timestamp");
+                let transaction_price = document.getElementsByClassName("transaction-price");
+                for(let i = 0; i < product_name.length; i++){
+                    transaction_product_name[i].style.width = "30vw";
+                    transaction_timestamp[i].style.marginLeft = "30vw";
+                    transaction_timestamp[i].style.marginRight = "5vw";
+                    transaction_price[i].style.marginLeft = "30vw";
+                    transaction_price[i].style.marginRight = "5vw";
+                }
+            }
+        })()
+    </script>
 {% endblock %}

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from .forms import SignupForm
 from django.contrib.auth import login, authenticate
 from django.utils.decorators import method_decorator
@@ -44,7 +44,7 @@ class CardCreateView(LoginRequiredMixin, CreateView):
 
 
 @method_decorator(login_required, name='dispatch')
-class ChargeWallet(TemplateView):
+class ChargeWalletView(TemplateView):
     template_name = 'possys/charge_wallet.html'
 
     def post(self, request):
