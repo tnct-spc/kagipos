@@ -32,7 +32,7 @@
                         <a class="nav-link" href="{% url 'charge_wallet' %}">残金追加</a>
                     </li>
                     <li class="nav-item">
-                        {% include 'possys/includes/modal.html' with trigger_button_type="a" trigger_button_class="nav-link" id_name="Logout" trigger_text="ログアウト" title="確認" text="ログアウトしますか?" action_url="/accounts/logout" %}
+                        {% include 'possys/includes/modal.html' with trigger_button_type="a" trigger_button_class="nav-link" id_name="Logout" trigger_text="ログアウト" title="確認" text="ログアウトしますか?" action_method="get" action_url="/accounts/logout" %}
                     </li>
                 {% else %}
                 {# ログインしていなければログイン，登録を表示する #}
