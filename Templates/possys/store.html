@@ -24,7 +24,7 @@
     </nav>
     <div class="tab-content" id="nav-tabContent">
     {% for category, products_list in products_dictionary_of_each_category.items %}
-        <div class="tab-pane fade show active" id="nav-{{ category.name }}" role="tabpanel" aria-labelledby="nav-{{ category.name }}-tab">
+        <div class="tab-pane fade" id="nav-{{ category.name }}" role="tabpanel" aria-labelledby="nav-{{ category.name }}-tab">
             {% for product in products_list %}
                 <div class="card border-dark" style="width: 90%; margin: 5% 5% 10% 5%;">
                     <div class="card-header bg-light">{{ product.name }}</div>
@@ -38,13 +38,16 @@
             {% endfor %}
         </div>
     {% endfor %}
+    </div>
 
 
     {# tabの最初を選択状態にする #}
     <script>
         (function(){
             let nav_tabs_text = document.getElementsByClassName("nav-tabs-text");
+            let tab_panes = document.getElementsByClassName("tab-pane");
             nav_tabs_text[0].classList.add("active");
+            tab_panes[0].classList.add("show", "active");
         })()
     </script>
 {% endblock %}
