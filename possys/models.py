@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from slack import SLACK_URL
+from django.forms.models import ModelMultipleChoiceField, ModelChoiceField
 from users.models import User
 
 
@@ -16,6 +17,11 @@ class Category(models.Model):
         verbose_name_plural = _('カテゴリー')
 
 
+class CategoriesChoiceField(ModelMultipleChoiceField):
+    def label_from_instance(self, obj: Category):
+        return obj.name
+
+
 class Product(models.Model):
     name = models.CharField(verbose_name='商品名', max_length=100, unique=True)
     categories = models.ManyToManyField(Category, related_name='products', verbose_name='カテゴリー', blank=True)
@@ -24,6 +30,11 @@ class Product(models.Model):
     class Meta:
         verbose_name = _('商品')
         verbose_name_plural = _('商品')
+
+
+class ProductChoiceField(ModelChoiceField):
+    def label_from_instance(self, obj: Category):
+        return obj.name
 
 
 class Transaction(models.Model):
