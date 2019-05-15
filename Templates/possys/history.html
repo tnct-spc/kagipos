@@ -4,24 +4,40 @@
 
 {% block body %}
     <h2 style="text-align: center">決済履歴</h2>
-    {% for transaction in transactions %}
-        {% if transaction.product %}
-            <div class="card" style="width: 80%; margin: 10%;">
-                <div class="card-header"><strong>商品購入</strong></div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">商品名 : {{ transaction.product.name }}</li>
-                    <li class="list-group-item">支払い金額 : {{ transaction.price }}円</li>
-                    <li class="list-group-item">決済日時 : {{ transaction.timestamp }}</li>
-                </ul>
-            </div>
-        {% else %}
-            <div class="card" style="width: 80%; margin: 10%;">
-                <div class="card-header"><strong>入金</strong></div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">支払い金額 : {{ transaction.price }}円</li>
-                    <li class="list-group-item">決済日時 : {{ transaction.timestamp }}</li>
-                </ul>
-            </div>
-        {% endif %}
-    {% endfor %}
+
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="nav-buy-tab" data-toggle="tab" href="#nav-buy" role="tab" aria-controls="nav-buy" aria-selected="true">購入履歴</a>
+            <a class="nav-item nav-link" id="nav-charge-tab" data-toggle="tab" href="#nav-charge" role="tab" aria-controls="nav-charge" aria-selected="false">入金履歴</a>
+        </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-buy" role="tabpanel" aria-labelledby="nav-buy-tab">
+            {% for transaction in transactions %}
+                {% if transaction.product %}
+                    <div class="card border-dark" style="width: 90%; margin: 5% 5% 10% 5%;">
+                        <div class="card-header bg-secondary text-white">{{ transaction.product.name }}</div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">金額:　{{ transaction.price }}円</li>
+                            <li class="list-group-item">日時:　{{ transaction.timestamp }}</li>
+                        </ul>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <div class="tab-pane fade" id="nav-charge" role="tabpanel" aria-labelledby="nav-charge-tab">
+            {% for transaction in transactions %}
+                {% if transaction.product == None %}
+                    <div class="card border-dark" style="width: 90%; margin: 5% 5% 10% 5%;">
+                        <div class="card-header bg-success text-white">入金</div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">金額:　{{ transaction.price }}円</li>
+                            <li class="list-group-item">日時:　{{ transaction.timestamp }}</li>
+                        </ul>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
