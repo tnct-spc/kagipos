@@ -25,7 +25,7 @@ SECRET_KEY = 'o!cb)@p-^vr912k#@dq&3th+c_b_%n*!^v8se06)s1!0ri-s+y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['possys.local', 'localhost']
 
 
 # Application definition
