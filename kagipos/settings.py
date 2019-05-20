@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'kagisys',
     'possys',
     'rest_framework',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
