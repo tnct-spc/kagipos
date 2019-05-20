@@ -81,11 +81,11 @@ WSGI_APPLICATION = 'kagipos.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
-        'USER': 'postgres',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'django',
+        'USER': 'django',
         'PASSWORD': 'hogehoge',
-        'HOST': 'postgres',
+        'HOST': 'db',
         'PORT': 5432,
     }
 }

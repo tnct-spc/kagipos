@@ -12,8 +12,8 @@ services:
     expose:
       - "3031"
     depends_on:
-      - postgres
-    command: bash -c "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn kagipos.wsgi -b 0.0.0.0:3031"
+      - db
+    command: bash -c "cd /opt/apps/ && python manage.py migrate --run-syncdb && python manage.py collectstatic --noinput && gunicorn kagipos.wsgi -b 0.0.0.0:3031"
     volumes:
       - "staticdata:/opt/static/"
       - "./:/opt/apps/"
@@ -27,15 +27,26 @@ services:
     volumes:
       - "./docker/nginx/:/etc/nginx/"
       - "staticdata:/opt/apps/static/"
-  postgres:
-    image: postgres
+#  postgres:
+#    image: postgres
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - "dbdata:/var/lib/postgresql/data"
+#    environment:
+#      POSTGRES_PASSWORD: hogehoge
+  db:
+    image: mariadb
     ports:
       - "5432:5432"
-    volumes:
-      - "dbdata:/var/lib/postgresql/data"
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
     environment:
-      POSTGRES_PASSWORD: hogehoge
+      MYSQL_ROOT_PASSWORD: hogehoge
+      MYSQL_DATABASE: django
+      MYSQL_USER: django
+      MYSQL_PASSWORD: hogehoge
+    volumes:
+      - "./mariadb-data/mysql:/var/lib/mysql"
 
 volumes:
-  dbdata:
   staticdata:
