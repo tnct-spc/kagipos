@@ -10,7 +10,7 @@
         {% csrf_token %}
             {% include 'possys/includes/form.html' %}
 
-            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 5%;">ログインする</button>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">ログインする</button>
             <input type="hidden" name="next" value="{{ next }}" />
         </form>
 

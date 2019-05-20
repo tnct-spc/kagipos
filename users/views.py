@@ -47,6 +47,7 @@ class CardCreateView(LoginRequiredMixin, CreateView):
 class ChargeWalletView(TemplateView):
     template_name = 'possys/charge_wallet.html'
 
+    @method_decorator(login_required, name='dispatch')
     def post(self, request):
         # 1000円チャージする
         price = 1000
