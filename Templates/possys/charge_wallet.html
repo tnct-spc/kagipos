@@ -12,8 +12,5 @@
             {{ user.username }}さんの現在の残金 : {{ user.wallet }}円
         </div>
     </div>
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-dark" style="width: 60%; margin: 10% 20% 20% 20%;">1000円チャージ！</button>
-    </form>
+    {% include 'possys/includes/modal.html' with trigger_button_class="btn btn-dark" trigger_button_style="width: 60%; margin: 10% 20% 20% 20%;" id_name="charge_wallet_confirmation" trigger_text="1000円チャージする" text="1000円チャージしますか？" %}
 {% endblock %}

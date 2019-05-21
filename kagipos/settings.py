@@ -25,7 +25,7 @@ SECRET_KEY = 'o!cb)@p-^vr912k#@dq&3th+c_b_%n*!^v8se06)s1!0ri-s+y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['possys.local', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'kagisys',
     'possys',
     'rest_framework',
+    'widget_tweaks',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -81,15 +83,15 @@ WSGI_APPLICATION = 'kagipos.wsgi.application'
 
 DATABASES = {
     'default': {
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'django',
-        'USER': 'django',
-        'PASSWORD': 'hogehoge',
-        'HOST': 'db',
-        'PORT': 5432,
+        'NAME': 'kagipos',
+        'USER': 'kagipos',
+        'PASSWORD': os.getenv('DATABASE_PASS'),
+        'HOST': '192.168.1.3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -114,8 +116,12 @@ REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
-        # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ],
 }
 
 
@@ -142,8 +148,8 @@ STATIC_ROOT = '/opt/static'
 
 AUTH_USER_MODEL = 'users.User'
 
-LOGOUT_REDIRECT_URL = 'products_list'
+LOGOUT_REDIRECT_URL = 'store'
 
 LOGIN_URL = 'login'
 
-LOGIN_REDIRECT_URL = 'products_list'
+LOGIN_REDIRECT_URL = 'store'

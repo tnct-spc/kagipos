@@ -3,11 +3,13 @@ from .models import Product, Transaction, Category
 from users.models import get_user_from_idm
 from .serializers import ProductSerializer, CategorySerializer
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from rest_framework import viewsets
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import BasePermission, IsAuthenticated
+from rest_framework.permissions import BasePermission
 from rest_framework.response import Response
 from kagipos.errors import CustomError
+from django.views.generic.list import ListView
 
 
 class ProductViewSet(viewsets.ModelViewSet):
@@ -38,7 +40,6 @@ def add_transaction(price, user, product=None):
     return Response('True,wallet=' + str(user.wallet))
 
 
-@login_required
 @permission_classes(IsPossysHousing)
 @api_view(['GET'])
 def add_transaction_with_product(request, idm, product_id):
@@ -48,26 +49,43 @@ def add_transaction_with_product(request, idm, product_id):
     return add_transaction(-product.price, get_user_from_idm(idm), product)
 
 
-@login_required
 @permission_classes(IsPossysHousing)
 @api_view(['GET'])
 def add_transaction_without_product(request, idm, price):
     return add_transaction(price, get_user_from_idm(idm))
 
 
-def products_list(request):
-    categories = Category.objects.all()
-    products_dictionary_of_each_category = {}
-    for category in categories:
-        tmp_list = Product.objects.filter(categories=category)
-        products_dictionary_of_each_category[category] = tmp_list
-    return render(request, 'possys/products_list.html', {
-        'products_dictionary_of_each_category': products_dictionary_of_each_category,
-    })
+class StoreView(ListView):
+    model = Category
+    context_object_name = 'categories'
+    template_name = 'possys/store.html'
+    result = None
+
+    @method_decorator(login_required, name='dispatch')
+    def post(self, request):
+        price = int(request.POST["price"])
+        user = request.user
+        product_id = request.POST["product_id"]
+        product = Product.objects.get(id=product_id)
+
+        # ちゃんと購入できるだけの残高を持っているか確認する
+        result = add_transaction(price=-price, user=user, product=product)
+        return render(request, 'possys/store.html', {
+            'result': result,
+            'categories': Category.objects.all(),
+        })
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['result'] = self.result
+        return context
 
 
-@login_required
-def history(request):
-    transactions = Transaction.objects.filter(user=request.user).order_by('-timestamp')
+@method_decorator(login_required, name='dispatch')
+class HistoryView(ListView):
+    context_object_name = 'transactions'
+    template_name = 'possys/history.html'
 
-    return render(request, 'possys/history.html', {'transactions': transactions, })
+    def get_queryset(self):
+        queryset = Transaction.objects.filter(user=self.request.user).order_by('-timestamp')
+        return queryset

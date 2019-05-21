@@ -1,11 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from .forms import SignupForm
 from django.contrib.auth import login, authenticate
+from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from possys.views import add_transaction
 from django.views.generic.edit import CreateView
+from django.views.generic.base import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Temporary, Card, User
 
@@ -41,13 +43,14 @@ class CardCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-@login_required
-def charge_wallet(request):
-    if request.method == 'POST':
+@method_decorator(login_required, name='dispatch')
+class ChargeWalletView(TemplateView):
+    template_name = 'possys/charge_wallet.html'
+
+    @method_decorator(login_required, name='dispatch')
+    def post(self, request):
         # 1000円チャージする
         price = 1000
         user = request.user
-        # 引数がidmからuserに変更されるので先に対応しておく
         add_transaction(price, user)
         return redirect('charge_wallet')
-    return render(request, 'possys/charge_wallet.html', {})

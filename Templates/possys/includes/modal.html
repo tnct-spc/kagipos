@@ -1,4 +1,4 @@
-<{{ trigger_button_type | default:"button" }} class="{{ trigger_button_class | default:"btn btn-primary product-buy" }}" data-toggle="modal" data-target="#confirmationModalFor{{ id_name | default:"confirmation" }}">
+<{{ trigger_button_type | default:"button" }} class="{{ trigger_button_class | default:"btn btn-primary product-buy" }}" style="{{ trigger_button_style }}" data-toggle="modal" data-target="#confirmationModalFor{{ id_name | default:"confirmation" }}">
     {{ trigger_text }}
 </{{ trigger_button_type | default:"button" }}>
 
@@ -6,7 +6,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="confirmationModalFor{{ id_name | default:"confirmation" }}Label">{{ title }}</h5>
+                <h5 class="modal-title" id="confirmationModalFor{{ id_name | default:"confirmation" }}Label">{{ title | default:"確認" }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -16,7 +16,10 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ disagree_text | default:"いいえ" }}</button>
-                <button type="submit" class="btn btn-primary" onclick="location.href='{{ action_url }}'">{{ agree_text | default:"はい" }}</button>
+                <form method="{{ action_method | default:"post" }}" action="{{ action_url | default:"" }}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">{{ agree_text | default:"はい" }}</button>
+                </form>
             </div>
         </div>
     </div>
