@@ -2,48 +2,14 @@
 
 {% block title %}ユーザー登録{% endblock %}
 
-{% block head %}
-    {# djangoの自動生成でlabelによくわからないmargin-bottomが入っていたので消す #}
-    <style>
-        label{
-            margin-bottom: 0;
-            transform: scale(0.9);
-        }
-    </style>
-{% endblock %}
-
 {% block body %}
     <h2 style="text-align: center">ユーザー登録</h2>
     <div class="card" style="width: 94%; margin: 3%; padding: 5%;">
         <form method="post" style="margin: 5%;" novalidate>
         {% csrf_token %}
-            {% for field in form %}
-                {% if form.is_bound and field.errors %}
-                    {% for error in field.errors %}
-                        <small style="color: red;">{{ error }}</small>
-                    {% endfor %}
-                {% endif %}
-                <div class="input-group mb-3" style="transform: scale(0.9); width: 110%"> {# 縮小と横幅の拡張をしないとスマホのときに確認用パスワードのレイアウトが崩れる #}
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">{{ field.label_tag }}</span>
-                    </div>
-                    {{ field.as_widget }}
-                </div>
-                    {% if field.help_text %}
-                        <small class="form-text text-muted" style="transform: scale(0.9); margin-bottom: 2%;">{{ field.help_text }}</small>　{# 縮小と横幅の拡張をしないとスマホのときに確認用パスワードのレイアウトが崩れる #}
-                    {% endif %}
-            {% endfor %}
+            {% include 'possys/includes/form.html' %}
+
             <button type="submit" class="btn btn-primary" style="width: 100%;">登録する</button>
         </form>
     </div>
-
-    {# widget_tweaksを使わずに自動生成formでbootstrapを使う #}
-    <script>
-        (function(){
-            let input_forms = document.getElementsByTagName("input");
-            for(let i = 0; i < input_forms.length; i++){
-                input_forms[i].classList.add("form-control");
-            }
-        })()
-    </script>
 {% endblock %}
