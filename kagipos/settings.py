@@ -88,7 +88,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'kagipos',
         'USER': 'kagipos',
-        'PASSWORD': os.getenv('DATABASE_PASS'),
+        'PASSWORD': os.environ['DATABASE_PASS'],
         'HOST': '192.168.1.3',
     }
 }
