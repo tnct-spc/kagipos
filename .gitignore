@@ -1,5 +1,5 @@
 slack.py
-/mariadb-data/
+db.env
 
 
 # Created by https://www.gitignore.io/api/django,python,pycharm+all
