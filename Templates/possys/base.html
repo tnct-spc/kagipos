@@ -23,6 +23,7 @@
                 {% if user.is_authenticated %}
                 {# ログインしていたらユーザー名と各ページへのリンクを表示する #}
                     <li class="nav-item" style="border-bottom: 2px solid gray;">
+                    {# TODO: 残金が足りない購入をしたときに残金がマイナスになるがリロードすると直るのでどうにかする #}
                         <span class="navbar-text">{{ user.username }}さん　残金: {{ user.wallet }}円</span>
                     </li>
                     <li class="nav-item">

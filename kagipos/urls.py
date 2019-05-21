@@ -14,13 +14,22 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, reverse_lazy
+from django.views.generic.base import RedirectView
+from rest_framework import routers
+from rest_framework.authtoken.views import obtain_auth_token
 from possys.urls import router as possys_router
 
+
+router = routers.DefaultRouter()
+router.registry.extend(possys_router.registry)
+
 urlpatterns = [
+    path('', RedirectView.as_view(url=reverse_lazy('store'))),
     path('admin/', admin.site.urls),
     path('kagisys/', include('kagisys.urls')),
     path('possys/', include('possys.urls')),
     path('accounts/', include('users.urls')),
-    path('api/possys/', include(possys_router.urls))
+    path('api/', include(router.urls)),
+    path('api/auth/', obtain_auth_token),
 ]

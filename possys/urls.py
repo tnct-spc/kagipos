@@ -25,6 +25,6 @@ urlpatterns = [
     path('api/add_transaction/<idm>/<int:price>/', possys_views.add_transaction_without_product),
 ]
 
-router = routers.DefaultRouter()
-router.register(r'products', possys_views.ProductViewSet)
-router.register(r'categories', possys_views.CategoryViewSet)
+router = routers.SimpleRouter()
+router.register(r'possys/products', possys_views.ProductViewSet)
+router.register(r'possys/categories', possys_views.CategoryViewSet)

@@ -5,9 +5,6 @@ from django.utils.translation import gettext_lazy as _
 from .models import User, Card, Temporary
 
 
-admin.site.register({Card, Temporary})
-
-
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     add_form_template = 'admin/auth/user/add_form.html'
@@ -34,3 +31,17 @@ class UserAdmin(admin.ModelAdmin):
     search_fields = ('username', 'first_name', 'last_name', 'email', 'number')
     ordering = ('number', 'username')
     filter_horizontal = ('groups', 'user_permissions',)
+
+
+@admin.register(Card)
+class CardAdmin(admin.ModelAdmin):
+    list_display = ('get_username', 'name', 'idm', 'is_guest')
+
+    def get_username(self, obj: Card):
+        return obj.user.username
+    get_username.short_description = 'ユーザー名'
+
+
+@admin.register(Temporary)
+class TemporaryAdmin(admin.ModelAdmin):
+    list_display = ('idm', 'uuid')
