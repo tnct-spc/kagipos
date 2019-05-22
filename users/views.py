@@ -1,4 +1,4 @@
-from django.shortcuts import redirect
+from django.shortcuts import render
 from .forms import SignupForm
 from django.contrib.auth import login, authenticate
 from django.utils.decorators import method_decorator
@@ -52,5 +52,6 @@ class ChargeWalletView(TemplateView):
         # 1000円チャージする
         price = 1000
         user = request.user
-        add_transaction(price, user)
-        return redirect('charge_wallet')
+        result = add_transaction(price, user)
+        return render(request, 'possys/charge_wallet.html', {'result': result, })
+

@@ -3,7 +3,7 @@
 {% block title %}決済履歴{% endblock %}
 
 {% block body %}
-    <h2 style="text-align: center">決済履歴</h2>
+    <h2 class="page-title">決済履歴</h2>
 
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -17,7 +17,7 @@
         <div class="tab-pane fade show active" id="nav-buy" role="tabpanel" aria-labelledby="nav-buy-tab">
             {% for transaction in transactions %}
                 {% if transaction.product %}
-                    <div class="card border-dark" style="width: 90%; margin: 5% 5% 10% 5%;">
+                    <div class="card border-dark full-width">
                         <div class="card-header bg-secondary text-white">{{ transaction.product.name }}</div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">金額:　{{ transaction.price }}円</li>
@@ -31,7 +31,7 @@
         <div class="tab-pane fade" id="nav-charge" role="tabpanel" aria-labelledby="nav-charge-tab">
             {% for transaction in transactions %}
                 {% if transaction.product == None %}
-                    <div class="card border-dark" style="width: 90%; margin: 5% 5% 10% 5%;">
+                    <div class="card border-dark full-width">
                         <div class="card-header bg-success text-white">入金</div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">金額:　{{ transaction.price }}円</li>

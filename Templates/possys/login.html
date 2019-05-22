@@ -3,14 +3,14 @@
 {% block title %}ログイン{% endblock %}
 
 {% block body %}
-    <h2 style="text-align: center">ログイン</h2>
-    <div class="card" style="width: 94%; margin: 3%; padding: 5%;">
+    <h2 class="page-title">ログイン</h2>
+    <div class="card full-width p-4">
 
         <form method="post" action="{% url 'login' %}" novalidate>
         {% csrf_token %}
             {% include 'possys/includes/form.html' %}
 
-            <button type="submit" class="btn btn-primary" style="width: 100%;">ログインする</button>
+            <button type="submit" class="btn btn-primary full-width">ログインする</button>
             <input type="hidden" name="next" value="{{ next }}" />
         </form>
 

@@ -13,12 +13,22 @@
 {% endblock %}
 
 {% block body %}
-    <h2 style="text-align: center">商品一覧</h2>
+    <h2 class="page-title">商品一覧</h2>
 
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
             {% for category in categories %}
-                <a class="nav-item nav-link nav-tabs-text" id="nav-{{ category.name }}-tab" data-toggle="tab" href="#nav-{{ category.name }}" role="tab" aria-controls="nav-{{ category.name }}" aria-selected="true">{{ category.name }}</a>
+                <a class="nav-item nav-link nav-tabs-text"
+                   id="nav-{{ category.name }}-tab"
+                   data-toggle="tab"
+                   href="#nav-{{ category.name }}"
+                   role="tab"
+                   aria-controls="nav-{{ category.name }}"
+                   aria-selected="true">
+
+                    {{ category.name }}
+
+                </a>
             {% endfor %}
         </div>
     </nav>
@@ -26,12 +36,12 @@
     {% for category in categories %}
         <div class="tab-pane fade" id="nav-{{ category.name }}" role="tabpanel" aria-labelledby="nav-{{ category.name }}-tab">
             {% for product in category.products.values %}
-                <div class="card border-dark" style="width: 90%; margin: 5% 5% 10% 5%;">
+                <div class="card border-dark full-width">
                     <div class="card-header bg-light">{{ product.name }}</div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">金額:　{{ product.price }}円</li>
                         <li class="list-group-item">
-                            {% include 'possys/includes/purchase_confirmation_modal.html' with toggle_button_style="width: 100%;" %}
+                            {% include 'possys/includes/purchase_confirmation_modal.html' with toggle_button_class="full-width" %}
                         </li>
                     </ul>
                 </div>
