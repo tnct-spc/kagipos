@@ -1,12 +1,13 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserChangeForm, UserCreationForm, AdminPasswordChangeForm
 from django.utils.translation import gettext_lazy as _
+from import_export.admin import ImportExportModelAdmin
 
 from .models import User, Card, Temporary
 
 
 @admin.register(User)
-class UserAdmin(admin.ModelAdmin):
+class UserAdmin(ImportExportModelAdmin):
     add_form_template = 'admin/auth/user/add_form.html'
     change_user_password_template = None
     fieldsets = (
@@ -34,7 +35,7 @@ class UserAdmin(admin.ModelAdmin):
 
 
 @admin.register(Card)
-class CardAdmin(admin.ModelAdmin):
+class CardAdmin(ImportExportModelAdmin):
     list_display = ('get_username', 'name', 'idm', 'is_guest')
 
     def get_username(self, obj: Card):
@@ -43,5 +44,5 @@ class CardAdmin(admin.ModelAdmin):
 
 
 @admin.register(Temporary)
-class TemporaryAdmin(admin.ModelAdmin):
+class TemporaryAdmin(ImportExportModelAdmin):
     list_display = ('idm', 'uuid')
