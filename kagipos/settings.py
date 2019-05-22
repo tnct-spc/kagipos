@@ -25,7 +25,7 @@ SECRET_KEY = 'o!cb)@p-^vr912k#@dq&3th+c_b_%n*!^v8se06)s1!0ri-s+y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['possys.local', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'kagisys',
     'possys',
     'rest_framework',
+    'widget_tweaks',
     'rest_framework.authtoken',
 ]
 
@@ -81,16 +82,11 @@ WSGI_APPLICATION = 'kagipos.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'hogehoge',
-        'HOST': 'postgres',
-        'PORT': 5432,
-    }
+   'default': {
+       'ENGINE': 'django.db.backends.sqlite3',
+       'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+   }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators

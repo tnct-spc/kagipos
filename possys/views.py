@@ -56,15 +56,8 @@ def add_transaction_without_product(request, idm, price):
 
 
 class StoreView(ListView):
-    # カテゴリーごとで商品をまとめる
-    categories = Category.objects.all()
-    products_dictionary_of_each_category = {}
-    for category in categories:
-        tmp_list = Product.objects.filter(categories=category)
-        products_dictionary_of_each_category[category] = tmp_list
-
-    queryset = products_dictionary_of_each_category
-    context_object_name = 'products_dictionary_of_each_category'
+    model = Category
+    context_object_name = 'categories'
     template_name = 'possys/store.html'
     result = None
 
@@ -76,14 +69,10 @@ class StoreView(ListView):
         product = Product.objects.get(id=product_id)
 
         # ちゃんと購入できるだけの残高を持っているか確認する
-        if user.wallet >= price:
-            price *= -1  # add_transactionで購入に対応していないのでこっちで負の値にする
-            result = add_transaction(price=price, user=user, product=product)
-        else:
-            result = "NotEnoughMoney"
+        result = add_transaction(price=-price, user=user, product=product)
         return render(request, 'possys/store.html', {
             'result': result,
-            'products_dictionary_of_each_category': self.queryset,
+            'categories': Category.objects.all(),
         })
 
     def get_context_data(self, **kwargs):

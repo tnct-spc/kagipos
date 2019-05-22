@@ -13,7 +13,7 @@ services:
       - "3031"
     depends_on:
       - postgres
-    command: bash -c "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn kagipos.wsgi -b 0.0.0.0:3031"
+    command: bash -c "python manage.py migrate --run-syncdb && python manage.py collectstatic --noinput && gunicorn kagipos.wsgi -b 0.0.0.0:3031"
     volumes:
       - "staticdata:/opt/static/"
       - "./:/opt/apps/"
