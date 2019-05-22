@@ -1,16 +1,17 @@
 from django.contrib import admin
+from import_export.admin import ImportExportModelAdmin
 
 from .models import Category, Product, Transaction
 from .forms import ProductAdminForm, TransactionAdminForm
 
 
 @admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(ImportExportModelAdmin):
     list_display = ('name',)
 
 
 @admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(ImportExportModelAdmin):
     list_display = ('name', 'price', 'get_categories')
     form = ProductAdminForm
 
@@ -20,7 +21,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 @admin.register(Transaction)
-class TransactionAdmin(admin.ModelAdmin):
+class TransactionAdmin(ImportExportModelAdmin):
     list_display = ('price', 'get_username', 'get_product_name', 'timestamp')
     form = TransactionAdminForm
 

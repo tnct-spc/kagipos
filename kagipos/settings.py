@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'widget_tweaks',
     'rest_framework.authtoken',
+    'import_export',
 ]
 
 MIDDLEWARE = [
