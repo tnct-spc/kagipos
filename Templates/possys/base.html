@@ -14,6 +14,16 @@
         }
 
 
+        #content{
+            margin-top: 30px;
+        }
+
+
+        .border-gray{
+            border-bottom: 2px solid gray;
+        }
+
+
         .full-width{
             width: 100%;
         }
@@ -32,7 +42,7 @@
 
     {% endblock %}
 </head>
-<body style="margin: 0;">
+<body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="{% url 'store' %}">POSSYS</a>
@@ -43,7 +53,7 @@
             <ul class="navbar-nav">
                 {% if user.is_authenticated %}
                 {# ログインしていたらユーザー名と各ページへのリンクを表示する #}
-                    <li class="nav-item" style="border-bottom: 2px solid gray;">
+                    <li class="nav-item border-gray">
                     {# TODO: 残金が足りない購入をしたときに残金がマイナスになるがリロードすると直るのでどうにかする #}
                         <span class="navbar-text">{{ user.username }}さん　残金: {{ user.wallet }}円</span>
                     </li>
@@ -73,7 +83,7 @@
 
 {% endblock %}
 
-<div id="content" style="margin-top: 30px">
+<div id="content">
     {% block body %}
 
     {% endblock %}

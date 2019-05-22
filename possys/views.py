@@ -68,7 +68,6 @@ class StoreView(ListView):
         product_id = request.POST["product_id"]
         product = Product.objects.get(id=product_id)
 
-        # ちゃんと購入できるだけの残高を持っているか確認する
         result = add_transaction(price=-price, user=user, product=product)
         return render(request, 'possys/store.html', {
             'result': result,

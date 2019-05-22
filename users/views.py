@@ -54,4 +54,3 @@ class ChargeWalletView(TemplateView):
         user = request.user
         result = add_transaction(price, user)
         return render(request, 'possys/charge_wallet.html', {'result': result, })
-
