@@ -9,21 +9,28 @@ services:
     build:
       context: ./
       dockerfile: ./docker/django/Dockerfile
-    expose:
-      - "3031"
     depends_on:
       - postgres
-    command: bash -c "python manage.py migrate --run-syncdb && python manage.py collectstatic --noinput && gunicorn kagipos.wsgi -b 0.0.0.0:3031"
+    command: bash -c "sleep 5; python manage.py migrate --run-syncdb && python manage.py collectstatic --noinput && gunicorn kagipos.wsgi -b 0.0.0.0:8000"
     volumes:
       - "staticdata:/opt/static/"
       - "./:/opt/apps/"
+  https-portal:
+    image: steveltn/https-portal:1
+    ports:
+      - '80:80'
+      - '443:443'
+    environment:
+      DOMAINS: 'kagipos.local -> http://nginx:8000/, 192.168.2.1 -> http://nginx:8000/, localhost -> http://nginx:8000/'
+      STAGE: 'local'
+      #STAGE: 'production'
+    depends_on:
+      - nginx
   nginx:
     restart: always
     image: nginx
     depends_on:
       - django
-    ports:
-      - "80:80"
     volumes:
       - "./docker/nginx/:/etc/nginx/"
       - "staticdata:/opt/apps/static/"

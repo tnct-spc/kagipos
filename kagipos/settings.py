@@ -24,7 +24,7 @@ SECRET_KEY = 'o!cb)@p-^vr912k#@dq&3th+c_b_%n*!^v8se06)s1!0ri-s+y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['possys.local', 'kagipos.local', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['kagipos.local', 'localhost', '127.0.0.1', '192.168.2.1']
 
 # Application definition
 
