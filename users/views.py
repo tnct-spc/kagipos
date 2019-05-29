@@ -51,9 +51,6 @@ class ChargeWalletView(TemplateView):
     def post(self, request):
         # 1000円チャージする
         price = request.POST["price"]
-        # priceが何も入力されていないならリダイレクトする
-        if price is "":
-            return redirect("charge_wallet")
         price = int(price)
         user = request.user
         result = add_transaction(price, user)
