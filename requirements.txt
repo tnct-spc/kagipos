@@ -1,2 +1,4 @@
 djangorestframework
 requests
+django-widget-tweaks
+django-import-export
