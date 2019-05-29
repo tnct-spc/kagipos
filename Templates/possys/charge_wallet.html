@@ -12,10 +12,13 @@
 
 {% block body %}
     <h2 class="page-title">残金追加</h2>
-    <div class="card full-width">
-        <div class="card-body">
-            {{ user.username }}さんの現在の残金 : {{ user.wallet }}円
+
+    <div class="card full-width p-4">
+        <div class="card full-width">
+            <div class="card-body">
+                {{ user.username }}さんの現在の残金 : {{ user.wallet }}円
+            </div>
         </div>
+        {% include 'possys/includes/charge_wallet_confirmation_modal.html' with trigger_button_class="btn btn-dark full-width" id_name="charge_wallet_confirmation" trigger_text="残金を追加する" text="残金を追加しますか？" %}
     </div>
-    {% include 'possys/includes/modal.html' with trigger_button_class="btn btn-dark full-width" id_name="charge_wallet_confirmation" trigger_text="1000円チャージする" text="1000円チャージしますか？" %}
 {% endblock %}
