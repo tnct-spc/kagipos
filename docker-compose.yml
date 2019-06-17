@@ -15,24 +15,17 @@ services:
     volumes:
       - "staticdata:/opt/static/"
       - "./:/opt/apps/"
-  https-portal:
-    image: steveltn/https-portal:1
-    ports:
-      - '80:80'
-      - '443:443'
-    environment:
-      DOMAINS: 'kagipos.local -> http://nginx:8000/, 192.168.2.1 -> http://nginx:8000/, localhost -> http://nginx:8000/'
-      STAGE: 'local'
-      #STAGE: 'production'
-    depends_on:
-      - nginx
   nginx:
     restart: always
     image: nginx
+    ports:
+      - '80:80'
+      - '443:443'
     depends_on:
       - django
     volumes:
       - "./docker/nginx/:/etc/nginx/"
+      - "./docker/certs/:/etc/ssl/certs/"
       - "staticdata:/opt/apps/static/"
   postgres:
     image: postgres
