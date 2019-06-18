@@ -2,15 +2,23 @@
 
 {% block title %}残金追加{% endblock %}
 
-{% block body %}
-    <h2 style="text-align: center">残金追加</h2>
-    {% if result_message %}
-        <h5 style="color: red; margin: 10%">{{ result_message }}</h5>
+{% block alert %}
+    {% if result.status_code == 418 %}
+        {% include 'possys/includes/danger_alert.html' with text="入金に失敗しました" %}
+    {% elif result %}
+        {% include 'possys/includes/success_alert.html' with text="入金に成功しました" %}
     {% endif %}
-    <div class="card" style="width: 80%; margin: 10%;">
-        <div class="card-body">
-            {{ user.username }}さんの現在の残金 : {{ user.wallet }}円
+{% endblock %}
+
+{% block body %}
+    <h2 class="page-title">残金追加</h2>
+
+    <div class="card full-width p-4">
+        <div class="card full-width">
+            <div class="card-body">
+                {{ user.username }}さんの現在の残金 : {{ user.wallet }}円
+            </div>
         </div>
+        {% include 'possys/includes/charge_wallet_confirmation_modal.html' with trigger_button_class="btn btn-dark full-width" id_name="charge_wallet_confirmation" trigger_text="残金を追加する" text="残金を追加しますか？" %}
     </div>
-    {% include 'possys/includes/modal.html' with trigger_button_class="btn btn-dark" trigger_button_style="width: 60%; margin: 10% 20% 20% 20%;" id_name="charge_wallet_confirmation" trigger_text="1000円チャージする" text="1000円チャージしますか？" %}
 {% endblock %}

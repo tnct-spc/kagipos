@@ -1,0 +1,34 @@
+<form method="{{ action_method | default:"post" }}" action="{{ action_url | default:"" }}">
+    {% csrf_token %}
+    <div class="input-group mb-5">
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="price">入金額</label>
+        </div>
+        <input id="price" name="price" class="form-control" type="number" min="1" required>
+    </div>
+
+    {# エディターだとエラーが出てるかもしれないが実際に動かすとtrigger_button_typeに値が入るので動く #}
+    <{{ trigger_button_type | default:"button" }} type="button" class="{{ trigger_button_class | default:"btn btn-primary product-buy" }}" style="{{ trigger_button_style }}" data-toggle="modal" data-target="#confirmationModalFor{{ id_name | default:"confirmation" }}">
+        {{ trigger_text }}
+    </{{ trigger_button_type | default:"button" }}>
+
+    <div class="modal fade" id="confirmationModalFor{{ id_name | default:"confirmation" }}" tabindex="-1" role="dialog" aria-labelledby="confirmationModalFor{{ id_name | default:"confirmation" }}Label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmationModalFor{{ id_name | default:"confirmation" }}Label">{{ title | default:"確認" }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ text }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ disagree_text | default:"いいえ" }}</button>
+                    <button type="submit" class="btn btn-primary">{{ agree_text | default:"はい" }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
