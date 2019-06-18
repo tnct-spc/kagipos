@@ -63,12 +63,11 @@ class StoreView(ListView):
 
     @method_decorator(login_required, name='dispatch')
     def post(self, request):
-        price = int(request.POST["price"])
         user = request.user
         product_id = request.POST["product_id"]
         product = Product.objects.get(id=product_id)
+        price = product.price
 
-        # ちゃんと購入できるだけの残高を持っているか確認する
         result = add_transaction(price=-price, user=user, product=product)
         return render(request, 'possys/store.html', {
             'result': result,

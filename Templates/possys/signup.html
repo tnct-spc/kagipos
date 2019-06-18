@@ -3,13 +3,13 @@
 {% block title %}ユーザー登録{% endblock %}
 
 {% block body %}
-    <h2 style="text-align: center">ユーザー登録</h2>
-    <div class="card" style="width: 94%; margin: 3%; padding: 5%;">
-        <form method="post" style="margin: 5%;" novalidate>
+    <h2 class="page-title">ユーザー登録</h2>
+    <div class="card full-width p-4">
+        <form method="post" novalidate>
         {% csrf_token %}
             {% include 'possys/includes/form.html' %}
 
-            <button type="submit" class="btn btn-primary" style="width: 100%;">登録する</button>
+            <button type="submit" class="btn btn-primary full-width">登録する</button>
         </form>
     </div>
 {% endblock %}
