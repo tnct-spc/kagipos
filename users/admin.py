@@ -1,9 +1,11 @@
 from django.contrib import admin
+from django.urls import path
+from django.shortcuts import render
 from django.contrib.auth.admin import UserChangeForm, UserCreationForm, AdminPasswordChangeForm
 from django.utils.translation import gettext_lazy as _
 from import_export.admin import ImportExportModelAdmin
 
-from .models import User, Card, Temporary
+from .models import User, Card, Temporary, Invitation
 
 
 @admin.register(User)
@@ -46,3 +48,31 @@ class CardAdmin(ImportExportModelAdmin):
 @admin.register(Temporary)
 class TemporaryAdmin(ImportExportModelAdmin):
     list_display = ('idm', 'uuid')
+
+
+@admin.register(Invitation)
+class InvitationAdmin(ImportExportModelAdmin):
+    list_display = ('uuid', 'is_active', 'generated_time')
+
+    def get_urls(self):
+        urls = super().get_urls()
+        extend_urls = [
+            path('manage/', self.admin_site.admin_view(self.manage_invitation))
+        ]
+        return extend_urls + urls
+
+    def manage_invitation(self, request):
+        invitations = Invitation.objects.all()
+        context = dict(
+            self.admin_site.each_context(request),
+        )
+        context['invitations'] = invitations
+
+        if request.method == 'POST':
+            invitation = Invitation()
+            invitation.save()
+            invitation_url = str(request.scheme) + "://" + str(request.get_host()) + '/accounts/signup/' + str(invitation.uuid) + '/'
+            context['invitation_url'] = invitation_url
+            return render(request, 'admin/users/invitation/manage_invitation.html', context)
+
+        return render(request, 'admin/users/invitation/manage_invitation.html', context)

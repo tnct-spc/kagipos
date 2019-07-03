@@ -140,3 +140,14 @@ class Temporary(models.Model):
 
 def get_user_from_idm(idm):
     return User.objects.get(cards__idm=idm)
+
+
+class Invitation(models.Model):
+    uuid = models.UUIDField(verbose_name='UUID', primary_key=True, default=uuid.uuid4(), editable=False)
+    is_active = models.BooleanField(verbose_name='有効性', default=True)
+    generated_time = models.DateTimeField(verbose_name='生成された時間', default=timezone.now)
+    registered_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='invitations', verbose_name='登録ユーザー', blank=True, null=True)
+
+    class Meta:
+        verbose_name = _('招待')
+        verbose_name_plural = _('招待')

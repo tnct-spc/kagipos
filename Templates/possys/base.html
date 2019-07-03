@@ -67,10 +67,7 @@
                         {% include 'possys/includes/modal.html' with trigger_button_type="a" trigger_button_class="nav-link" id_name="Logout" trigger_text="ログアウト" title="確認" text="ログアウトしますか?" action_method="get" action_url="/accounts/logout" %}
                     </li>
                 {% else %}
-                {# ログインしていなければログイン，登録を表示する #}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'signup' %}">ユーザー登録</a>
-                    </li>
+                {# ログインしていなければログインを表示する #}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'login' %}">ログイン</a>
                     </li>
