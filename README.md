@@ -7,13 +7,32 @@ kagisys-possys統合環境
 
 ## 本番環境での初回起動時にやること
 ```bash
-sudo docker exec -it kagipos_django_1 /bin/bash
+docker exec -it kagipos_django_1 /bin/bash
 ```
 これでコンテナの中に入るので
 ```bash
 python manage.py createsuperuser
 ```
 を実行して管理者を作る
+
+## デプロイ方法
+```bash
+docker-compose restart
+```
+単なる`git pull`だけでも反映される可能性がある
+これで反映されなかったり、エラーがでる場合は、コンテナに入って
+```bash
+python manage.py makemigration
+python manage.py migrate --run-syncdb
+```
+とすればうまくいく・・・かもしれない
+models.pyを書き換えた場合 migrate 関連は必須で、コンフリクトする場合も多いので頑張ろう
+
+```bash
+docker-compose down
+docker-compose up
+```
+も使える
 
 ## APIについて
 APIは、単体APIとREST-APIに分けてある
