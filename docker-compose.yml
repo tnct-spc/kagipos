@@ -28,6 +28,7 @@ services:
       - "./docker/certs/:/etc/ssl/certs/"
       - "staticdata:/opt/apps/static/"
   postgres:
+    restart: always
     image: postgres
     ports:
       - "5432:5432"
